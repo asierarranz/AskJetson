@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+HELLO!
+If you liked send me some love to asierarranz@gmail.com
+Thanks!
+-->
+
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="static/favicon.ico">
+    <script src="static/jquery.min.js"></script>
+    <script src="static/bootstrap.min.js"></script>
+    <script src="static/typeit.min.js"></script>
+    <script type="text/javascript" async src="static/twitter.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135005603-1"></script>
+	<script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date());gtag('config', 'UA-135005603-1');</script>
+    <link href="static/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="static/style.css?v=4">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <title>AskJetson - Query the OpenAI Artificial Intelligence GPT-2 Reduced Model in a NVIDIA Jetson</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <h2>AskJetson: Query a tiny Jetson NX Xavier with OpenAI GPT-2 model!</h2>
+            <h5>GPT-2 running in only 4GB</h5>
+            <div id="skynetinput">
+                <div class="input-group col-md-12">
+                    <input id=text type="text" class="search-query form-control" placeholder="Write your own sentence or click RANDOMIZE to play with some examples (The answer will be always different!)" onfocus="clearText()" value="The answer to the ultimate question of life, the universe and everything is" />
+                    <span class="input-group-btn">
+              <button class="btn btn-danger" type="submit" onclick="sendText()" id="send">
+                <span class="">ASK 🤖</span>
+                    </button>
+                    </span>
+                </div>
+                <center>
+                    <button type="button" class="btn btn-warning" onclick="suggest()"><i class="fa fa-random"></i> RANDOMIZE (funny) input</button>
+                    <button type="button" class="btn btn-info" onclick="info()">Wait a second... What is this about?</button>
+                </center>
+            </div>
+
+        </div>
+    </div>
+    <div id="response"></div>
+    <div id="response2"></div>
+
+    <div id="contact">
+        <a class="twitter-follow-button" href="https://twitter.com/asierarranz" data-size="large">Follow @asierarranz</a>
+    </div>
+
+    <div id="circle">
+        <div class="loader">
+        </div>
+    </div>
+    <div class="g-ytsubscribe" data-channelid="UCfpysSCYogYLei_dVlu2s-A" data-layout="full" data-theme="dark" data-count="default" ontap="notify()"></div>
+</body>
+
+<script>
+    var cleared = false;
+
+    function subscribe() {
+        fetch('https://askskynet.com/api/subscribe?youtube=true', {
+                method: "POST"
+            })
+            .then(function(response) {
+                return response.json();
+            }).then((ret) => {
+                console.log(ret);
+            });
+        document.location.href = "http://asierarranz.com/youtube";
+    }
+
+    function suggest() {
+        mySuggestions = ['What is the meaning of life? The meaning of life is', 'The next big thing in technology is', 'Autonomous cars are dangerous because', 'Should I use Uber or a taxi? I think you should use Uber because', 'Should I use Uber or a taxi? I think you should use Taxi because', 'Many scientists have concluded that the earth shape is', 'I was in my Spaceship, obiting the Jupiter moons, when suddenly', 'What do you recommend me for a romantic dinner? A white wine or a red wine? I think', 'Who came up with the theory of relativity? The theory of relativity was created by', 'Will AI take consciousness of itself? Artificial Intelligence is evolving a lot, so ', 'What should I do with my life? Maybe doing some', 'Are we alone in the Universe or is there another alien life out there? I think', 'Am I a part of a computer simulation created by an advanced civilization?', 'I was riding my unicorn on the beach, the sunset was beautiful, but suddenly', 'Once upon a time ', 'It was a bright cold day in April, and the clocks were striking thirteen.', 'This is the saddest story I have ever heard.', 'This is the funniest story I have ever heard.', 'In the late summer of that year we lived in a house in a village that looked across the river and the plain to the mountains.', 'Time is not a line but a dimension, like the dimensions of space. ', 'Who is your father?' ];
+        document.getElementById('text').value = mySuggestions[Math.floor(Math.random() * mySuggestions.length)];
+    }
+
+    function info() {
+        document.getElementById("response").style.backgroundColor = "#094c04";
+        document.getElementById('response').style.height = "350px";
+        new TypeIt('#response', {
+            strings: "This website allows you to give a sentence to 'SkyNet', and it will write a context following this sentece with a quite credible speech.<br>This has been created thanks to the research of OpenAI with the GPT-2 model. As you can see, AI is becoming very powerful and even today is almost impossible to distinguis a 'real' human thing from a machine made one, so you should use it to <b>make the World a better place</b>.<br><br>Remember...<br><b>With great power comes great responsibility.</b><br><br>ENJOY!<br><br>--<br>Asier Arranz (<a href='https://www.twitter.com/asierarranz' target='_blank'>@asierarranz</a>)<br><a href='https://www.asierarranz.com' target='_blank'>www.asierarranz.com</a><br>asierarranz@gmail.com",
+            speed: 1,
+            waitUntilVisible: false
+        }).go();
+    }
+
+    function thanks() {
+        document.getElementById("response").style.backgroundColor = "#094c04";
+        document.getElementById('response').style.height = "150px";
+        new TypeIt('#response', {
+            strings: "Thanks to <a href='https://www.azken.com' target='_blank'>AZKEN</a> and <a href='https://www.dixper.gg' target='_blank'>DIXPER</a> who have provided a 24/7d backup server with the powerful nVidia P4 during the first months of this website. And thanks to Ismael Faro and Paco Martín for stopping me developing this in PHP and showing me the marvelous Python Flask way.",
+            speed: 1,
+            waitUntilVisible: false
+        }).go();
+    }
+
+    function clearText() {
+        if (!cleared)
+            document.getElementById('text').value = "";
+        cleared = true;
+    }
+
+    function sendText() {
+        text = document.getElementById('text').value;
+        text = text.trim();
+        console.log(text.length);
+        if (text.length > 5) {
+            document.getElementById("skynetinput").style.display = "none";
+            document.getElementById("response").style.backgroundColor = "#094c04";
+            document.getElementById("circle").style.display = "block";
+            document.getElementById('response').style.height = "500px";
+            new TypeIt('#response', {
+                strings: "Please wait... I am doing the inference of the GPT-2 reduced model published by Open AI in a tiny NVIDIA Jetson Xavier NX<br>Usually this takes around 15 seconds, but if the Jetson is very busy with other users this can take a bit more, relax, take a coffee and wait a bit :-)<br>This application is in ALPHA, if you have any comments or suggestions, contact me at asierarranz@gmail.com<br><br><br>Also, you can <a href='https://www.askskynet.com'>TRY AGAIN</a><br>Thanks!",
+                speed: 50,
+                waitUntilVisible: false
+            }).go();
+            text = document.getElementById('text').value;
+            console.log(text);
+            fetch('https://askskynet.com/api/submit?text=' + text, {
+                    method: "POST"
+                })
+                .then(function(response) {
+                    return response.json();
+                }).then((ret) => {
+                    console.log(ret);
+                    document.getElementById("circle").style.display = "none";
+                    new TypeIt('#response', {
+                        strings: ret.output,
+                        speed: 30,
+                        waitUntilVisible: false
+                    }).go();
+                    if (ret.output.includes("Subscribe")) {
+                        document.getElementById('response').style.height = "350px";
+                        document.getElementById('response2').innerHTML = '<center><button class="btn btn-danger btn-xs" ontap="subscribe()" onclick="subscribe()"><i class=""></i> Subscribe to my Youtube channel </button></center>';
+                        document.getElementById("response").style.backgroundColor = "#094c04";
+                    } else {
+                        document.getElementById('response').style.height = "500px";
+                        document.getElementById("response").style.backgroundColor = "#094c04";
+                    }
+                });
+        } else {
+            document.getElementById('text').placeholder = "Write a longer input!";
+            document.getElementById('text').value = "";
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    var input = document.getElementById("text");
+    input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("send").click();
+        }
+    });
+
+    var userLang = navigator.language || navigator.userLanguage; 
+	if (userLang === "es".trim())
+	{
+        document.getElementById('response').style.height = "380px";
+		new TypeIt('#response', {
+            strings: "Parece que hablas español. Por ahora el modelo reducido GPT-2 sólo interpreta bien el inglés.<br><br>UN CONSEJO: Si vas a escribir una pregunta, haz una pregunta larga y dándole algo de contexto a la respuesta que esperas.<br>EJEMPLO: Who was Albert Einstein? Albert Einstein was the scientist who invented<br>Así la IA creará una historia más 'humana'.<br>Diviértete! Y si te gusta, compártelo, es gratis!<br>--<br>@asierarranz",
+            speed: 35,
+            waitUntilVisible: false
+        }).go();
+	}
+
+</script>
+
+</html>
